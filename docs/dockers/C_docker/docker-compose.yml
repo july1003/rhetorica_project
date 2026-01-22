@@ -1,0 +1,33 @@
+# Server C: docker-compose.yml
+version: '3.8'
+
+services:
+  # 1. 관계형 및 벡터 DB (PostgreSQL + pgvector)
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: vector_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+
+  # 2. 엔터프라이즈 DB (Oracle XE)
+  oracle:
+    image: gvenzl/oracle-xe:latest
+    container_name: enterprise_db
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    restart: always
+
+volumes:
+  pg_data:
+  oracle_data:
