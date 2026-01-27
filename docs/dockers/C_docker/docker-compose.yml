@@ -1,8 +1,7 @@
-# Server C (192.168.40.54) docker-compose.yml
 version: '3.8'
 
 services:
-  # [DB 1] 벡터 검색용 PostgreSQL
+  # [DB 1] 벡터 검색용 PostgreSQL + pgvector
   postgres:
     image: pgvector/pgvector:pg16
     container_name: vector_db
@@ -24,17 +23,37 @@ services:
       - oracle_data:/opt/oracle/oradata
     restart: always
 
+  # [AI] 임베딩 전용 Ollama
+  embedding_server:
+    image: ollama/ollama
+    container_name: ollama_embedding
+    ports:
+      - "11435:11434" # 외부 11435 -> 컨테이너 11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h # 임베딩 모델 상주
+    restart: always
+
   # [Batch] 주기적 데이터 처리 프로그램
   batch_app:
     build:
       context: .
-      dockerfile: Dockerfile.batch # 위에서 만든 파일 지정
+      dockerfile: Dockerfile.batch
     container_name: interview_batch
     env_file: .env
     depends_on:
       - postgres
       - oracle
+      - embedding_server
     restart: on-failure
+    volumes:
+      - Z:\:/shared_data
 
 volumes:
   pg_data:

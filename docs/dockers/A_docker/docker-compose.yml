@@ -1,8 +1,7 @@
-# Server A: docker-compose.yml
 version: '3.8'
 
 services:
-  # 1. 메시지 브로커 (중앙 집중형)
+  # 1. 메시지 브로커
   redis:
     image: redis:7.2-alpine
     container_name: central_redis
@@ -17,8 +16,14 @@ services:
     ports:
       - "8000:8000"
     env_file: .env
+    environment:
+      - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:6006
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://phoenix:6006
     depends_on:
       - redis
+      - phoenix
+    volumes:
+      - Z:\:/shared_data # 윈도우 Z드라이브를 컨테이너 내 /shared_data로 매핑
 
   # 3. 실시간 AI 워커 (STT, LLM 꼬리질문 전담)
   rt_worker:
@@ -32,9 +37,15 @@ services:
               count: 1
               capabilities: [gpu]
     env_file: .env
+    environment:
+      - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:6006
     command: celery -A tasks worker -Q realtime_queue --concurrency=1 --loglevel=info
+    depends_on:
+      - phoenix
+    volumes:
+      - Z:\:/shared_data # 윈도우 Z드라이브를 컨테이너 내 /shared_data로 매핑
 
-  # 4. LLM 서버 (Ollama 활용)
+  # 4. LLM 서버 (Ollama)
   ollama:
     image: ollama/ollama
     container_name: ollama_server
@@ -47,3 +58,11 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
+  # 5. Arize Phoenix 추가 (Observability)
+  phoenix:
+    image: arize-phoenix:latest
+    container_name: arize_phoenix
+    ports:
+      - "6006:6006" # Phoenix UI 및 데이터 수집 포트
+    restart: always

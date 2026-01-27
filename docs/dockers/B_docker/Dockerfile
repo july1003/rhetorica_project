@@ -6,6 +6,7 @@ FROM nvidia/cuda:12.1.0-base-ubuntu22.04
 # OpenCV(얼굴인식), PostgreSQL, Oracle 클라이언트 설치를 위한 설정입니다.
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
+    ffmpeg \
     python3.10 \
     python3-pip \
     libgl1-mesa-glx \

@@ -20,3 +20,10 @@ python-docx
 # Analytics
 pandas
 matplotlib
+
+# 음성 처리 및 API 통신용
+requests
+pydub
+numpy
+# 서버 A에서 결과 전송 시 필요한 클라이언트
+aiohttp
