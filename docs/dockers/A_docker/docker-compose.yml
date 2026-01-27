@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   # 1. 메시지 브로커
@@ -61,7 +61,7 @@ services:
 
   # 5. Arize Phoenix 추가 (Observability)
   phoenix:
-    image: arize-phoenix:latest
+    image: arizephoenix/phoenix:latest
     container_name: arize_phoenix
     ports:
       - "6006:6006" # Phoenix UI 및 데이터 수집 포트

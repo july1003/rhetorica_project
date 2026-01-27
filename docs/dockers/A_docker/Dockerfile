@@ -20,19 +20,20 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # 4. 파이썬 패키지 설치
-# 여기에 Arize Phoenix 관련 패키지가 포함된 requirements.txt가 필요합니다.
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+# pip 업그레이드 및 패키지 설치
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt
 
 # 5. 소스 코드 복사
 COPY . .
 
 # 6. 환경 변수 설정
 ENV PYTHONUNBUFFERED=1
-
-# 7. Arize Phoenix 수집기 주소 설정 (기본값)
-# 실제 주소는 docker-compose.yml의 environment 섹션에서 덮어씌워집니다.
+# Arize Phoenix 및 OpenTelemetry 설정을 위한 환경 변수
 ENV PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:6006
+ENV OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 
-# 8. 실행
-CMD ["python3", "main.py"]
+# 7. 실행 (FastAPI 서버를 위해 Uvicorn 사용)
+# main.py 안에 app = FastAPI() 가 있다고 가정합니다.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
