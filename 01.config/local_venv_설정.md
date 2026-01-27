@@ -1,3 +1,24 @@
+## local 개발환경 설정
+
+```
+# 1. Create a virtual environment named 'venv'
+python -m venv venv
+
+# 2. Activate the virtual environment (Windows)
+.\venv\Scripts\activate
+
+# 3. Upgrade pip to the latest version
+python -m pip install --upgrade pip
+
+# 4. Install dependencies from your requirements.txt
+# pip install -r requirements.txt
+pip install fastapi uvicorn
+```
+
+---
+
+old one
+
 30년 차 설계자의 안목으로 볼 때, **Python 3.10**은 매우 안정적인 선택이지만, 2026년 현재 AI 프로젝트(특히 `BGE-M3`나 `Pinecone` 같은 최신 라이브러리 활용)를 수행하기에는 **Python 3.11**이 가장 '스위트 스폿(Sweet Spot)'이라고 할 수 있습니다.
 
 학원 파이널 프로젝트를 위해 **Python 3.11**을 추천하는 이유와 `venv` 설정법을 정리해 드릴게요.
