@@ -1,6 +1,6 @@
-version: '3.8' 
+version: "3.8"
 
-services: 
+services:
   # [DB 1] 벡터 검색용 PostgreSQL + pgvector
   postgres:
     image: pgvector/pgvector:pg16
@@ -27,6 +27,9 @@ services:
   embedding_server:
     image: ollama/ollama
     container_name: ollama_embedding
+    environment:
+      - OLLAMA_HOST=0.0.0.0      # 모든 네트워크 인터페이스에서 접속 허용
+      - OLLAMA_ORIGINS=* # CORS 허용 (브라우저/n8n 등 접속 시 필요)
     ports:
       - "11435:11434" # 외부 11435 -> 컨테이너 11434
     deploy:
@@ -54,6 +57,7 @@ services:
     restart: on-failure
     volumes:
       - Z:\:/shared_data
+      - ../../../src/Ethos:/app/Ethos
 
 volumes:
   pg_data:

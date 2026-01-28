@@ -24,7 +24,8 @@ services:
       - phoenix
     volumes:
       - Z:\:/shared_data # 윈도우 Z드라이브를 컨테이너 내 /shared_data로 매핑
-      - ../../../:/app # 프로젝트 루트를 컨테이너 /app에 매핑
+      # - ../../../:/app # 프로젝트 루트를 컨테이너 /app에 매핑
+      - ../../../src/Logos:/app/Logos # 소스 코드 명시적 매핑
     command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 
   # 3. 실시간 AI 워커 (STT, LLM 꼬리질문 전담)
@@ -46,11 +47,15 @@ services:
       - phoenix
     volumes:
       - Z:\:/shared_data # 윈도우 Z드라이브를 컨테이너 내 /shared_data로 매핑
+      - ../../../src/Logos:/app/Logos
 
   # 4. LLM 서버 (Ollama)
   ollama:
     image: ollama/ollama
     container_name: ollama_server
+    environment:
+      - OLLAMA_HOST=0.0.0.0      # 모든 네트워크 인터페이스에서 접속 허용
+      - OLLAMA_ORIGINS=* # CORS 허용 (브라우저/n8n 등 접속 시 필요)
     ports:
       - "11434:11434"
     deploy:
