@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logos AI Chat Test</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .chat-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+      }
+      .chat-header {
+        background: #4a90e2;
+        color: white;
+        padding: 15px;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+      .chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .message {
+        padding: 10px 15px;
+        border-radius: 15px;
+        max-width: 80%;
+        line-height: 1.5;
+      }
+      .user-message {
+        background: #e3f2fd;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+      }
+      .bot-message {
+        background: #f0f0f0;
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+      }
+      .input-area {
+        padding: 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+      }
+      input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+      }
+      button {
+        padding: 10px 20px;
+        background: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background: #357abd;
+      }
+      button:disabled {
+        background: #ccc;
+      }
+      .loading {
+        font-style: italic;
+        color: #888;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">Logos AI Chat (Qwen 2.5)</div>
+      <div class="chat-messages" id="messages">
+        <div class="message bot-message">
+          안녕하세요! AI 면접관 Logos입니다. 무엇을 도와드릴까요?
+        </div>
+      </div>
+      <div class="input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="메시지를 입력하세요..."
+          onkeypress="if (event.key === 'Enter') sendMessage();"
+        />
+        <button onclick="sendMessage()" id="sendBtn">전송</button>
+      </div>
+    </div>
+
+    <script>
+      async function sendMessage() {
+        const input = document.getElementById("userInput");
+        const btn = document.getElementById("sendBtn");
+        const messages = document.getElementById("messages");
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        // User Message
+        appendMessage(text, "user-message");
+        input.value = "";
+        input.disabled = true;
+        btn.disabled = true;
+
+        // Loading
+        const loadingId = appendMessage("생성 중...", "bot-message loading");
+
+        try {
+          const response = await fetch("/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: text }),
+          });
+
+          const data = await response.json();
+
+          // Remove loading
+          document.getElementById(loadingId).remove();
+
+          if (data.error) {
+            appendMessage("Error: " + data.error, "bot-message");
+          } else {
+            appendMessage(data.response, "bot-message");
+          }
+        } catch (e) {
+          document.getElementById(loadingId).remove();
+          appendMessage("Error connecting to server", "bot-message");
+        }
+
+        input.disabled = false;
+        btn.disabled = false;
+        input.focus();
+      }
+
+      function appendMessage(text, className) {
+        const messages = document.getElementById("messages");
+        const div = document.createElement("div");
+        div.className = "message " + className;
+        div.textContent = text;
+        div.id = "msg-" + Date.now();
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+        return div.id;
+      }
+    </script>
+  </body>
+</html>

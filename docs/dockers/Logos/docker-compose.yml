@@ -26,7 +26,7 @@ services:
       - Z:\:/shared_data # 윈도우 Z드라이브를 컨테이너 내 /shared_data로 매핑
       # - ../../../:/app # 프로젝트 루트를 컨테이너 /app에 매핑
       - ../../../src/Logos:/app/Logos # 소스 코드 명시적 매핑
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn Logos.main:app --host 0.0.0.0 --port 8000 --reload
 
   # 3. 실시간 AI 워커 (STT, LLM 꼬리질문 전담)
   rt_worker:
