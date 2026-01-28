@@ -30,6 +30,7 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0      # 모든 네트워크 인터페이스에서 접속 허용
       - OLLAMA_ORIGINS=* # CORS 허용 (브라우저/n8n 등 접속 시 필요)
+      - OLLAMA_KEEP_ALIVE=24h # 임베딩 모델 상주
     ports:
       - "11435:11434" # 외부 11435 -> 컨테이너 11434
     deploy:
@@ -39,8 +40,6 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    environment:
-      - OLLAMA_KEEP_ALIVE=24h # 임베딩 모델 상주
     restart: always
 
   # [Batch] 주기적 데이터 처리 프로그램
@@ -59,6 +58,20 @@ services:
       - Z:\:/shared_data
       - ../../../src/Ethos:/app/Ethos
 
+  # [Storage] 오브젝트 스토리지 MinIO
+  minio:
+    image: minio/minio:latest
+    container_name: minio_server
+    ports:
+      - "9000:9000"       # API 포트
+      - "9001:9001"       # 콘솔(GUI) 포트
+    env_file: ../.env
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: always
+
 volumes:
   pg_data:
   oracle_data:
+  minio_data:
