@@ -1,4 +1,4 @@
-# AI 모의면접 시스템 구축시 평가 루브릭을 위한 ERD설계 및 각 테이블에 등록 될 기본 데이터 쿼리(postgre)
+# AI 모의면접 시스템 구축시 평가 루브릭을 위한 ERD설계 및 각 테이블에 등록 될 기본 데이터 쿼리
 
 AI 모의면접 시스템에서 평가 루브릭(Rubric)은 면접의 공정성과 객관성을 담보하는 핵심 요소입니다. 이를 효율적으로 관리하기 위한 **ERD 설계**와 PostgreSQL 기반의 **기초 데이터 생성 쿼리**를 제안해 드립니다.
 
@@ -604,6 +604,67 @@ CREATE TABLE interview_evaluations (
     feedback TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Oracle/Postgres Comments (한글 설명)
+COMMENT ON TABLE job_roles IS '직무 정보 (Job Roles)';
+COMMENT ON COLUMN job_roles.role_id IS '직무 ID';
+COMMENT ON COLUMN job_roles.role_name IS '직무명 (Frontend, Backend 등)';
+COMMENT ON COLUMN job_roles.description IS '직무 설명';
+
+COMMENT ON TABLE companies IS '기업 정보 (Companies)';
+COMMENT ON COLUMN companies.company_id IS '회사 ID';
+COMMENT ON COLUMN companies.name IS '회사명';
+COMMENT ON COLUMN companies.industry IS '산업군';
+COMMENT ON COLUMN companies.vision IS '비전';
+COMMENT ON COLUMN companies.core_values IS '핵심 가치 (인재상)';
+COMMENT ON COLUMN companies.homepage_url IS '홈페이지 URL';
+
+COMMENT ON TABLE rubric_categories IS '평가 카테고리 (Rubric Categories)';
+COMMENT ON COLUMN rubric_categories.category_id IS '카테고리 ID';
+COMMENT ON COLUMN rubric_categories.name IS '카테고리명 (예: 기술면접, 인성면접)';
+COMMENT ON COLUMN rubric_categories.description IS '카테고리 설명';
+COMMENT ON COLUMN rubric_categories.weight IS '가중치';
+
+COMMENT ON TABLE job_postings IS '채용 공고 (Job Postings)';
+COMMENT ON COLUMN job_postings.posting_id IS '공고 ID';
+COMMENT ON COLUMN job_postings.company_id IS '회사 ID (FK)';
+COMMENT ON COLUMN job_postings.role_id IS '직무 ID (FK)';
+COMMENT ON COLUMN job_postings.title IS '공고 제목';
+COMMENT ON COLUMN job_postings.requirements IS '자격 요건';
+COMMENT ON COLUMN job_postings.preferred_qualifications IS '우대 사항';
+COMMENT ON COLUMN job_postings.created_at IS '생성 일시';
+
+COMMENT ON TABLE company_tech_stacks IS '회사 기술 스택 (Company Tech Stacks)';
+COMMENT ON COLUMN company_tech_stacks.company_id IS '회사 ID (FK)';
+COMMENT ON COLUMN company_tech_stacks.tech_name IS '기술명 (예: Java, React)';
+
+COMMENT ON TABLE evaluation_items IS '세부 평가 항목 (Evaluation Items)';
+COMMENT ON COLUMN evaluation_items.item_id IS '항목 ID';
+COMMENT ON COLUMN evaluation_items.category_id IS '카테고리 ID (FK)';
+COMMENT ON COLUMN evaluation_items.item_name IS '항목명 (예: 문제 해결 능력)';
+COMMENT ON COLUMN evaluation_items.definition IS '항목 정의';
+
+COMMENT ON TABLE rubric_levels IS '루브릭 레벨 (Rubric Levels)';
+COMMENT ON COLUMN rubric_levels.level_id IS '레벨 ID';
+COMMENT ON COLUMN rubric_levels.item_id IS '항목 ID (FK)';
+COMMENT ON COLUMN rubric_levels.score IS '점수 (1~5)';
+COMMENT ON COLUMN rubric_levels.description IS '점수 기준 설명';
+
+COMMENT ON TABLE interview_questions IS '면접 질문 (Interview Questions)';
+COMMENT ON COLUMN interview_questions.question_id IS '질문 ID';
+COMMENT ON COLUMN interview_questions.role_id IS '직무 ID (FK)';
+COMMENT ON COLUMN interview_questions.category_id IS '카테고리 ID (FK)';
+COMMENT ON COLUMN interview_questions.question_text IS '질문 내용';
+COMMENT ON COLUMN interview_questions.intent IS '질문 의도';
+COMMENT ON COLUMN interview_questions.ideal_answer IS '모범 답안';
+
+COMMENT ON TABLE interview_evaluations IS '면접 평가 결과 (Interview Evaluations)';
+COMMENT ON COLUMN interview_evaluations.evaluation_id IS '평가 ID';
+COMMENT ON COLUMN interview_evaluations.session_id IS '세션 ID';
+COMMENT ON COLUMN interview_evaluations.item_id IS '항목 ID (FK)';
+COMMENT ON COLUMN interview_evaluations.score IS '점수';
+COMMENT ON COLUMN interview_evaluations.feedback IS '상세 피드백';
+COMMENT ON COLUMN interview_evaluations.created_at IS '생성 일시';
 ```
 
 ---

@@ -2,14 +2,16 @@
 
 DBeaver에서 **새 연결(New Connection)**을 누르고 **Oracle**을 선택한 뒤, 다음 항목들을 입력하세요.
 
-| **항목**            | **입력 값** | **비고**                      |
-| ------------------------- | ----------------- | ----------------------------------- |
-| **Connection Type** | **Basic**   | 기본 설정                           |
-| **Host**            | 192.68.40.54      |                                     |
-| **Port**            | `1521`          |                                     |
-| **Database (SID)**  | `XE`            | `gvenzl/oracle-xe`이미지의 기본값 |
-| **Username**        | `SYSTEM`        | 또는 `.env`에 설정한 계정         |
-| **Password**        | oracle_pass       | `ORACLE_PASSWORD`값               |
+| **항목**            | **입력 값**     | **비고**                      |
+| ------------------------- | --------------------- | ----------------------------------- |
+| **Connection Type** | **Basic**       | 기본 설정                           |
+| **Host**            | 192.68.40.54          |                                     |
+| **Port**            | `1521`              |                                     |
+| **Database (SID)**  | `XE`                | `gvenzl/oracle-xe`이미지의 기본값 |
+| **Username**        | `SYSTEM`            | `.env`에 설정한 admin 계정        |
+| **Password**        | oracle_pass           | `ORACLE_PASSWORD`값               |
+| Username                  | rhetorica             | 일반 user 계정                     |
+| Password                  | rhetorica_project2026 |                                     |
 
 ## 2. 오라클 DB 작업
 
