@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mock Interview System - Rhetorica Project</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #10B981;
+            --secondary-hover: #059669;
+            --background: #F3F4F6;
+            --surface: #FFFFFF;
+            --text-main: #1F2937;
+            --text-sub: #6B7280;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--surface);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            max-width: 800px;
+            background: var(--surface);
+            padding: 4rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-sub);
+            margin-bottom: 3rem;
+        }
+
+        .description strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-main);
+            border: 2px solid var(--border, #E5E7EB);
+        }
+
+        .btn-secondary:hover {
+            background-color: #F9FAFB;
+            border-color: var(--text-sub);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Rhetorica</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Rhetorica Project</h1>
+            <p class="description">
+                <strong>레토리카(Rhetorica)</strong>는 아리스토텔레스의 저서 『수사학』에서 영감을 받아<br>
+                고전 수사학의 정수를 현대의 <strong>AI 기술</strong>로 재해석한 프로젝트입니다.<br>
+                가장 지능적이고 세련된 AI 면접 파트너를 경험해보세요.
+            </p>
+            <div class="buttons">
+                <a href="/login" class="btn btn-primary">로그인</a>
+                <a href="/register" class="btn btn-secondary">회원가입</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
