@@ -1,4 +1,4 @@
-fastapi
+langgraphfastapi
 uvicorn
 requests
 jinja2
@@ -6,8 +6,9 @@ celery
 redis
 sqlalchemy
 psycopg2-binary
-cx_Oracle
+oracledb
 python-dotenv
+passlib[bcrypt]
 # AI Models
 faster-whisper
 edge-tts
@@ -26,5 +27,6 @@ matplotlib
 
 arize-phoenix
 openinference-instrumentation-langchain
+opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-otlp

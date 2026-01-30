@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 - AI Mock Interview</title>
+    <style>
+      /* Modern Reset & Base Styles */
+      :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --background: #f3f4f6;
+        --surface: #ffffff;
+        --text-main: #1f2937;
+        --text-sub: #6b7280;
+        --border: #e5e7eb;
+        --error: #ef4444;
+        --success: #10b981;
+      }
+
+      body {
+        font-family:
+          "Pretendard",
+          -apple-system,
+          BlinkMacSystemFont,
+          system-ui,
+          Roboto,
+          sans-serif;
+        background-color: var(--background);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: var(--surface);
+        padding: 2.5rem;
+        border-radius: 1rem;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 100%;
+        max-width: 400px;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--primary);
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        box-sizing: border-box; /* Important for padding */
+        font-size: 1rem;
+        transition:
+          border-color 0.2s,
+          ring 0.2s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+
+      button {
+        width: 100%;
+        padding: 0.875rem;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 0.2s,
+          transform 0.1s;
+      }
+
+      button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      button:active {
+        transform: scale(0.98);
+      }
+
+      .message {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-size: 0.875rem;
+        display: none;
+      }
+
+      .message.error {
+        background-color: #fef2f2;
+        color: var(--error);
+        border: 1px solid #fecaca;
+        display: block;
+      }
+
+      .message.success {
+        background-color: #ecfdf5;
+        color: var(--success);
+        border: 1px solid #a7f3d0;
+        display: block;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-sub);
+      }
+
+      .login-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>회원가입</h1>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="홍길동"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="example@email.com"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            minlength="8"
+          />
+        </div>
+        <button type="submit">가입하기</button>
+      </form>
+      <div id="message" class="message"></div>
+      <div class="login-link">
+        이미 계정이 있으신가요? <a href="/login">현관으로 이동</a>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const messageDiv = document.getElementById("message");
+
+          // Reset message
+          messageDiv.className = "message";
+          messageDiv.textContent = "";
+
+          try {
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name, email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              messageDiv.classList.add("success");
+              messageDiv.textContent =
+                "회원가입이 완료되었습니다! 잠시 후 로그인 페이지로 이동합니다.";
+              setTimeout(() => {
+                window.location.href = "/"; // Redirect to home/login
+              }, 2000);
+            } else {
+              throw new Error(
+                data.detail || "회원가입 중 오류가 발생했습니다.",
+              );
+            }
+          } catch (error) {
+            messageDiv.classList.add("error");
+            messageDiv.textContent = error.message;
+          }
+        });
+    </script>
+  </body>
+</html>

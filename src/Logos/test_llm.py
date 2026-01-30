@@ -2,6 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from phoenix.otel import register
 
 # Load .env from project root
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -32,4 +33,11 @@ def test_generate():
         return False
 
 if __name__ == "__main__":
-    test_generate()
+    # test_generate()
+    from phoenix.otel import register
+
+tracer_provider = register(
+  project_name="rhetorica_project",
+  endpoint="http://192.168.40.61:6006",
+  auto_instrument=True
+)
