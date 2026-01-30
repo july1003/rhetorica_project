@@ -31,6 +31,8 @@ services:
       - OLLAMA_HOST=0.0.0.0      # 모든 네트워크 인터페이스에서 접속 허용
       - OLLAMA_ORIGINS=* # CORS 허용 (브라우저/n8n 등 접속 시 필요)
       - OLLAMA_KEEP_ALIVE=24h # 임베딩 모델 상주
+    volumes:
+      - ollama_data:/root/.ollama  # 모델 영구 보관용 볼륨 추가
     ports:
       - "11435:11434" # 외부 11435 -> 컨테이너 11434
     deploy:
@@ -75,3 +77,4 @@ volumes:
   pg_data:
   oracle_data:
   minio_data:
+  ollama_data:
